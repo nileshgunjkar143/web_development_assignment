@@ -3,14 +3,20 @@ import LCard from './LCard';
 import './List.css'
 import Box from '@mui/material/Box';
 import Pagination from '@mui/material/Pagination';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 function List() {
     const [data,setData] = useState([]);
     const [currentpage,setCurrentpage] = useState('59b3f0b0100000e30b236b7e');
     const [error,setError] =useState(null)
+    const [page,setPage] = useState(true)
     
 
     const handleChange = (event, value) => {
+      setPage(true)
         if(value===1){
             setCurrentpage('59b3f0b0100000e30b236b7e')
         }
@@ -26,16 +32,63 @@ function List() {
         .then(res => res.json())
         .then(data => setData(data.posts))
         .catch(() => setError('technical error'))
+        setPage(false)
     }
 
     useEffect(() => {
+      if(page){
         updateData();
+        setPage(false)
+      }
     },[updateData])
 
-    
-    
+    const sortArrayA = type => {
+      const types = {
+        views: 'views',
+        likes: 'likes',
+        shares: 'shares',
+      };
+      const sortProperty = types[type];
+      const sorted = [...data].sort((a, b) => a[sortProperty] - b[sortProperty]);
+      setData(sorted);
+    };
+    const sortArrayD = type => {
+      const types = {
+        views: 'views',
+        likes: 'likes',
+        shares: 'shares',
+      };
+      const sortProperty = types[type];
+      const sorted = [...data].sort((a, b) => b[sortProperty] - a[sortProperty]);
+      setData(sorted);
+    };
+
   return (
     <div id='main'>
+    <span>Sort By </span>
+      <Box >
+      <FormControl sx={{ minWidth: 100 ,marginTop:1}} >
+        <InputLabel >ASC</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          label="Age"
+          onChange={(e) => sortArrayA(e.target.value)}
+        >
+          <MenuItem value="views">Views</MenuItem>
+          <MenuItem value="likes">Likes</MenuItem>
+          <MenuItem value="shares">Shares</MenuItem>
+        </Select>
+      </FormControl>
+      <FormControl sx={{ minWidth: 100,marginTop:1 }} >
+        <InputLabel >DES</InputLabel>
+        <Select onChange={(e) => sortArrayD(e.target.value)}>
+          <MenuItem value="views">Views</MenuItem>
+          <MenuItem value="likes">Likes</MenuItem>
+          <MenuItem value="shares">Shares</MenuItem>
+        </Select>
+      </FormControl>
+    </Box>
     {error}
         <Box
         sx={{
@@ -45,8 +98,9 @@ function List() {
           flexDirection: 'column',
         }}
       >
-        {data.map((element) => {
+        {data.map((element,index) => {
             return (
+              <div key={index}>
                 <LCard
                     name={element.event_name} 
                     date={element.event_data}
@@ -55,6 +109,7 @@ function List() {
                     share={element.shares}
                     img={element.thumbnail_image}
                 />
+                </div>
             )
         })}
         </Box>

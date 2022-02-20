@@ -24,6 +24,7 @@ let {name,date,view,like,share,img} = props;
           }
           title={<h1>{name}</h1>}
           subheader={date}
+          
         />
         <CardMedia
           component="img"
