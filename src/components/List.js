@@ -47,6 +47,7 @@ function List() {
         views: 'views',
         likes: 'likes',
         shares: 'shares',
+        event_date : 'event_date'
       };
       const sortProperty = types[type];
       const sorted = [...data].sort((a, b) => a[sortProperty] - b[sortProperty]);
@@ -57,12 +58,13 @@ function List() {
         views: 'views',
         likes: 'likes',
         shares: 'shares',
+        event_date: 'event_date',
       };
       const sortProperty = types[type];
       const sorted = [...data].sort((a, b) => b[sortProperty] - a[sortProperty]);
       setData(sorted);
     };
-
+    
   return (
     <div id='main'>
     <span>Sort By </span>
@@ -78,6 +80,7 @@ function List() {
           <MenuItem value="views">Views</MenuItem>
           <MenuItem value="likes">Likes</MenuItem>
           <MenuItem value="shares">Shares</MenuItem>
+          <MenuItem value="event_date">Date</MenuItem>
         </Select>
       </FormControl>
       <FormControl sx={{ minWidth: 100,marginTop:1 }} >
@@ -86,6 +89,7 @@ function List() {
           <MenuItem value="views">Views</MenuItem>
           <MenuItem value="likes">Likes</MenuItem>
           <MenuItem value="shares">Shares</MenuItem>
+          <MenuItem value="event_date">Date</MenuItem>
         </Select>
       </FormControl>
     </Box>
@@ -100,10 +104,11 @@ function List() {
       >
         {data.map((element,index) => {
             return (
+              
               <div key={index}>
                 <LCard
                     name={element.event_name} 
-                    date={element.event_data}
+                    date={new Date(element.event_date).toLocaleString()}
                     view={element.views}
                     like={element.likes}
                     share={element.shares}

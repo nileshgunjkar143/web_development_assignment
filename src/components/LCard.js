@@ -16,14 +16,14 @@ function LCard(props) {
 let {name,date,view,like,share,img} = props;
   return (
     <div className='main'>
-      <Card sx={{ width: 890  }}>
+      <Card sx={{ width: 890,marginTop:2  }}>
         <CardHeader
           avatar={
             <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
             </Avatar>
           }
           title={<h1>{name}</h1>}
-          subheader={date}
+          subheader={<p>{date}</p>}
           
         />
         <CardMedia
