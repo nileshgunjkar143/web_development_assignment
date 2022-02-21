@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+  import React, { useEffect, useState } from 'react'
 import LCard from './LCard';
 import './List.css'
 import Box from '@mui/material/Box';
@@ -30,14 +30,23 @@ function List() {
     const updateData = async () =>{
         await fetch(`http://www.mocky.io/v2/${currentpage}`)
         .then(res => res.json())
-        .then(data => setData(data.posts))
+        .then(data =>{
+            window.localStorage.setItem(currentpage,JSON.stringify(data.posts))
+             setData(data.posts)})
         .catch(() => setError('technical error'))
         setPage(false)
     }
 
     useEffect(() => {
+
       if(page){
-        updateData();
+        const data = window.localStorage.getItem(currentpage)
+        if(data){
+          setData(JSON.parse(data))
+        }
+        else{
+          updateData();
+        }
         setPage(false)
       }
     },[updateData])
